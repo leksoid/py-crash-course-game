@@ -15,6 +15,15 @@ class Ship:
         # Start the ship at the midbottom position of the screen
         self.rect.midbottom = self.screen_rect.midbottom
 
+        self.moving_right = False
+        self.moving_left = False
+
     def blitme(self):
         """Draw the ship"""
         self.screen.blit(self.image, self.rect)
+
+    def update(self):
+        if self.moving_right:
+            self.rect.x += 1
+        if self.moving_left:
+            self.rect.x -= 1
