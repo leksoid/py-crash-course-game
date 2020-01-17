@@ -2,6 +2,9 @@ import pygame
 import sys
 from settings import Settings
 from ship import Ship
+from sys import argv
+
+script, mode = argv
 
 
 class AlienInvasion:
@@ -11,7 +14,13 @@ class AlienInvasion:
         """ Init the game and create game resources"""
         pygame.init()
         self.settings = Settings()
-        self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
+        if mode == 'fullscreen':
+            self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+            self.settings.screen_height = self.screen.get_rect().height
+            self.settings.screen_width = self.screen.get_rect().width
+        elif mode == 'window':
+            self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
+
         pygame.display.set_caption("Alien Invasion")
 
         self.ship = Ship(self)
@@ -54,7 +63,7 @@ class AlienInvasion:
             self.ship.moving_right = True
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = True
-        elif event.key == pygame.K_q
+        elif event.key == pygame.K_q:
             sys.exit()
 
 
