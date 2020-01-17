@@ -7,6 +7,7 @@ class Ship:
     def __init__(self, ai_game):
         """Init the ship and place it based on window screen object"""
         self.screen = ai_game.screen
+        self.settings = ai_game.settings
         self.screen_rect = ai_game.screen.get_rect()
 
         # Load the image and get its rectangle
@@ -14,6 +15,8 @@ class Ship:
         self.rect = self.image.get_rect()
         # Start the ship at the midbottom position of the screen
         self.rect.midbottom = self.screen_rect.midbottom
+
+        self.x = float(self.rect.x)
 
         self.moving_right = False
         self.moving_left = False
@@ -24,6 +27,7 @@ class Ship:
 
     def update(self):
         if self.moving_right:
-            self.rect.x += 1
+            self.rect.x += self.settings.ship_speed
         if self.moving_left:
-            self.rect.x -= 1
+            self.rect.x -= self.settings.ship_speed
+        self.rect.x = self.x
