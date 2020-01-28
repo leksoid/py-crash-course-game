@@ -51,9 +51,9 @@ class AlienInvasion:
         """Update position of bullets and get rid of unused bullets"""
         self.bullets.update()
             # Get rid of bullets that reach top of screen
-            for bullet in self.bullets.copy():
-                if bullet.rect.bottom <= 0:
-                    self.bullets.remove(bullet)    
+        for bullet in self.bullets.copy():
+            if bullet.rect.bottom <= 0:
+                self.bullets.remove(bullet)    
 
     def _check_events(self):
         # Watch for keyboard and mouse events. Quit is the "close" button
