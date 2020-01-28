@@ -3,6 +3,7 @@ import sys
 from settings import Settings
 from ship import Ship
 from sys import argv
+from bullet import Bullet
 
 script, mode = argv
 
@@ -24,6 +25,7 @@ class AlienInvasion:
         pygame.display.set_caption("Alien Invasion")
 
         self.ship = Ship(self)
+        self.bullets = pygame.sprite.Group()
 
         # Set the background color
         self.bg_color = self.settings.bg_color
@@ -33,12 +35,15 @@ class AlienInvasion:
         while True:
             self._check_events()
             self.ship.update()
+            self.bullets.update()
             self._update_screen()
 
     def _update_screen(self):
         # Redraw the screen during each pass through the loop
         self.screen.fill(self.bg_color)
         self.ship.blitme()
+        for bullet in self.bullets.sprites():
+            bullet.draw_bullet()
         # Make the recently drawn screen visible
         pygame.display.flip()
 
@@ -65,7 +70,13 @@ class AlienInvasion:
             self.ship.moving_left = True
         elif event.key == pygame.K_q:
             sys.exit()
+        elif event.key == pygame.K_SPACE:
+            self._fire_bullet()
 
+    def _fire_bullet(self):
+        """Create a new bullet and add to a group"""
+        new_bullet = Bullet(self)
+        self.bullets.add(new_bullet)
 
 if __name__ == '__main__':
     ai = AlienInvasion()
