@@ -1,5 +1,6 @@
 # Alien invasion!
 ![Python application](https://github.com/leksoid/py-crash-course-game/workflows/Python%20application/badge.svg)
+
 In Alien Invasion the player controls a rocket ship that appears at the bottom of the screen. 
 The player can move the ship right and left using the arrow keys and shoot bullets using the spacebar.
 When the game begins, a fleet of aliens fills the sky and moves across and down the screen.
