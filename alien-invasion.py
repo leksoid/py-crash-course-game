@@ -6,8 +6,6 @@ from alien import Alien
 from sys import argv
 from bullet import Bullet
 
-script, mode = argv
-
 
 class AlienInvasion:
     """Overall class to manage game assets and behavior"""
@@ -16,11 +14,14 @@ class AlienInvasion:
         """ Init the game and create game resources"""
         pygame.init()
         self.settings = Settings()
-        if mode == 'fullscreen':
-            self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
-            self.settings.screen_height = self.screen.get_rect().height
-            self.settings.screen_width = self.screen.get_rect().width
-        elif mode == 'window':
+        if len(argv) > 1:
+            if argv[1] == 'fullscreen':
+                self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+                self.settings.screen_height = self.screen.get_rect().height
+                self.settings.screen_width = self.screen.get_rect().width
+            elif argv[1] == 'window':
+                self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
+        else:
             self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
 
         pygame.display.set_caption("Alien Invasion")
@@ -95,6 +96,29 @@ class AlienInvasion:
     def _create_aliens_fleet(self):
         """Create the fleet of aliens"""
         alien = Alien(self)
+        # .size returns a tuple (width, height)
+        alien_width, alien_height = alien.rect.size 
+        available_space_x = self.settings.screen_width - (2 * alien_width)
+        number_aliens_x = available_space_x // (2 * alien_width)
+
+        # how many rows we need?
+        ship_height = self.ship.rect.height
+        available_space_y = (self.settings.screen_height 
+                                - (3 * alien_height) - ship_height)
+        number_rows = available_space_y // (2 * alien_height)
+
+        # Create first row of aliens
+        for row in range(number_rows):
+            for each in range(number_aliens_x):
+                self._create_alien(each, row)
+    
+    def _create_alien(self, alien_number, row):
+        """Create an alien and place it in a row """
+        alien = Alien(self)
+        alien_width, alien_height = alien.rect.size
+        alien.x = alien_width + 2 * alien_width * alien_number
+        alien.rect.x = alien.x
+        alien.rect.y = alien.rect.height + 2 * alien.rect.height * row
         self.aliens.add(alien)
 
 if __name__ == '__main__':
