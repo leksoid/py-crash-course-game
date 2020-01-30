@@ -41,6 +41,7 @@ class AlienInvasion:
             self._check_events()
             self.ship.update()
             self._update_bullets()
+            self._update_aliens()
             self._update_screen()
 
     def _update_screen(self):
@@ -60,6 +61,11 @@ class AlienInvasion:
         for bullet in self.bullets.copy():
             if bullet.rect.bottom <= 0:
                 self.bullets.remove(bullet)    
+    
+    def _update_aliens(self):
+        self._check_fleet_edges()
+        self.aliens.update()
+        
 
     def _check_events(self):
         # Watch for keyboard and mouse events. Quit is the "close" button
@@ -120,6 +126,17 @@ class AlienInvasion:
         alien.rect.x = alien.x
         alien.rect.y = alien.rect.height + 2 * alien.rect.height * row
         self.aliens.add(alien)
+
+    def _check_fleet_edges(self):
+        for alien in self.aliens.sprites():
+            if alien.is_edge():
+                self._change_fleet_direction()
+                break
+
+    def _change_fleet_direction(self):
+        for alien in self.aliens.sprites():
+            alien.rect.y += self.settings.alien_drop_speed
+        self.settings.fleet_direction *= -1
 
 if __name__ == '__main__':
     ai = AlienInvasion()
